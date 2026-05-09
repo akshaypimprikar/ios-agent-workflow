@@ -28,8 +28,5 @@ Before starting any task:
 - ViewModels depend on protocols, never concrete implementations
 - Views contain no business logic
 
-## Before opening the PR
-Run the `security-review` skill on the branch. Fix any findings before creating the PR.
-
 ## Done when
-All tasks complete, full test suite green, security-review clean. Open a PR to `main`. Then `/review` and `/test` run in parallel on the PR.
+All tasks complete, full test suite green. Open a PR to `main`. Then `/review`, `/test`, and `code-review:code-review` run in parallel on the PR.
