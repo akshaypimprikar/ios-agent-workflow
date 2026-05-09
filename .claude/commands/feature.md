@@ -12,7 +12,7 @@ Use the `superpowers:subagent-driven-development` skill to execute the plan.
 Before starting any task:
 - Read `CLAUDE.md` — build commands, architecture rules
 - Read the plan document in full
-- Confirm you are on a `feature/<name>` branch (create it off `main` if not)
+- Confirm you are on a `feature/<name>` branch (create it off `develop` if not)
 
 ## Per-task rules
 - Follow TDD: write failing test first, confirm failure, implement, confirm pass
@@ -29,4 +29,4 @@ Before starting any task:
 - Views contain no business logic
 
 ## Done when
-All tasks complete, full test suite green. Open a PR to `main`. Then `/review`, `/test`, and `code-review:code-review` run in parallel on the PR.
+All tasks complete, full test suite green. Open a PR to `develop`. Then `/review`, `/test`, and `code-review:code-review` run in parallel on the PR.

@@ -8,7 +8,8 @@ Invoked with a bug report: description + reproduction steps (e.g. `/bugfix "CSV 
 ## Process
 
 ### 1. Create the branch
-Branch `fix/<bug-name>` off `main`.
+**Regular bug:** Branch `fix/<bug-name>` off `develop`.
+**Hotfix (production bug on main):** Branch `hotfix/<bug-name>` off `main`.
 
 Read `CLAUDE.md` before touching any file.
 
@@ -34,7 +35,8 @@ git add <changed files>
 git commit -m "fix: <short description of what was wrong>"
 ```
 
-Open PR to `main`. The Review Agent (`/review`) runs on the PR.
+**Regular bug:** Open PR to `develop`. The Review Agent (`/review`) runs on the PR.
+**Hotfix:** Open PR to `main`. After merge, immediately back-merge `main` into `develop`.
 
 ## Architecture rules
 All fixes must respect the layer boundaries in `CLAUDE.md`:

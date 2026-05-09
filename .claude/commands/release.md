@@ -7,17 +7,17 @@ Invoked with a version number (e.g. `/release 1.0.0`).
 
 ## Pre-flight checks (must all pass before continuing)
 
-- [ ] All tests pass on `main`: run `xcodebuild test` (see `CLAUDE.md` for exact command)
-- [ ] No TODO/FIXME in any file added since last release: `git diff <last-tag>..main -- '*.swift' | grep -E "TODO|FIXME"`
+- [ ] All tests pass on `develop`: run `xcodebuild test` (see `CLAUDE.md` for exact command)
+- [ ] No TODO/FIXME in any file added since last release: `git diff <last-tag>..develop -- '*.swift' | grep -E "TODO|FIXME"`
 - [ ] No force-unwraps in production code added since last release
 
 If any check fails, stop and report what must be fixed.
 
 ## Process
 
-### 1. Create the release branch
+### 1. Create the release branch off develop
 ```bash
-git checkout main
+git checkout develop
 git pull
 git checkout -b release/<version>
 ```
@@ -43,26 +43,44 @@ Add a new section at the top:
 
 Use `git log <last-tag>..HEAD --oneline` to find what changed.
 
-### 4. Commit and tag
+### 4. Commit and push the release branch
 ```bash
 git add <AppName>.xcodeproj/project.pbxproj CHANGELOG.md
 git commit -m "chore: bump version to <version>"
-git tag -a v<version> -m "Release <version>"
+git push -u origin release/<version>
 ```
 
-### 5. Merge to main
+### 5. Open PR to main
 ```bash
-git checkout main
-git merge release/<version> --no-ff
-git push origin main
-git push origin v<version>
-git branch -d release/<version>
+gh pr create \
+  --title "release: v<version>" \
+  --base main \
+  --body "## Release v<version>
+- Version bump
+- CHANGELOG updated
+- See git log for full changes"
 ```
 
-### 6. Create GitHub release
+**Stop here.** Wait for the PR to be reviewed and merged before continuing.
+
+### 6. After merge — tag and back-merge to develop
+```bash
+git checkout main && git pull
+git tag -a v<version> -m "Release <version>"
+git push origin v<version>
+
+git checkout develop
+git merge main --no-ff
+git push origin develop
+
+git branch -d release/<version>
+git push origin --delete release/<version>
+```
+
+### 7. Create GitHub release
 ```bash
 gh release create v<version> --title "v<version>" --notes-file <(git log <last-tag>..v<version> --oneline)
 ```
 
 ## Done when
-`main` tagged, GitHub release created.
+PR merged to `main`, `main` tagged, `develop` updated, GitHub release created.
