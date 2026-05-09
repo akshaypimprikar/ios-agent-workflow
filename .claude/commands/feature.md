@@ -16,7 +16,8 @@ Before starting any task:
 
 ## Per-task rules
 - Follow TDD: write failing test first, confirm failure, implement, confirm pass
-- One commit per task
+- After implementation passes tests, run the `simplify` skill on changed files before committing
+- One commit per task (after simplify pass)
 - Run `xcodebuild test` after every task — do not proceed if tests fail
 - Never edit `project.pbxproj` — files auto-compile via `PBXFileSystemSynchronizedRootGroup`
 
@@ -28,4 +29,4 @@ Before starting any task:
 - Views contain no business logic
 
 ## Done when
-All tasks complete, full test suite green. Open a PR to `main`. Then the Review Agent (`/review`) and Test Agent (`/test`) run in parallel on the PR.
+All tasks complete, full test suite green. Open a PR to `main`. Then `/review`, `/test`, and `code-review:code-review` run in parallel on the PR.
