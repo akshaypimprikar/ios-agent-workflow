@@ -43,31 +43,44 @@ Add a new section at the top:
 
 Use `git log <last-tag>..HEAD --oneline` to find what changed.
 
-### 4. Commit and tag
+### 4. Commit and push the release branch
 ```bash
 git add <AppName>.xcodeproj/project.pbxproj CHANGELOG.md
 git commit -m "chore: bump version to <version>"
-git tag -a v<version> -m "Release <version>"
+git push -u origin release/<version>
 ```
 
-### 5. Merge to main, then back to develop
+### 5. Open PR to main
 ```bash
-git checkout main
-git merge release/<version> --no-ff
-git push origin main
+gh pr create \
+  --title "release: v<version>" \
+  --base main \
+  --body "## Release v<version>
+- Version bump
+- CHANGELOG updated
+- See git log for full changes"
+```
+
+**Stop here.** Wait for the PR to be reviewed and merged before continuing.
+
+### 6. After merge — tag and back-merge to develop
+```bash
+git checkout main && git pull
+git tag -a v<version> -m "Release <version>"
 git push origin v<version>
 
 git checkout develop
-git merge release/<version> --no-ff
+git merge main --no-ff
 git push origin develop
 
 git branch -d release/<version>
+git push origin --delete release/<version>
 ```
 
-### 6. Create GitHub release
+### 7. Create GitHub release
 ```bash
 gh release create v<version> --title "v<version>" --notes-file <(git log <last-tag>..v<version> --oneline)
 ```
 
 ## Done when
-`main` tagged, `develop` updated, GitHub release created.
+PR merged to `main`, `main` tagged, `develop` updated, GitHub release created.
