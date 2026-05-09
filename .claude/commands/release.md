@@ -7,8 +7,8 @@ Invoked with a version number (e.g. `/release 1.0.0`).
 
 ## Pre-flight checks (must all pass before continuing)
 
-- [ ] All tests pass on `develop`: run `xcodebuild test` (see `CLAUDE.md` for exact command)
-- [ ] No TODO/FIXME in any file added since last release: `git diff <last-tag>..develop -- '*.swift' | grep -E "TODO|FIXME"`
+- [ ] All tests pass on `main`: run `xcodebuild test` (see `CLAUDE.md` for exact command)
+- [ ] No TODO/FIXME in any file added since last release: `git diff <last-tag>..main -- '*.swift' | grep -E "TODO|FIXME"`
 - [ ] No force-unwraps in production code added since last release
 
 If any check fails, stop and report what must be fixed.
@@ -17,13 +17,13 @@ If any check fails, stop and report what must be fixed.
 
 ### 1. Create the release branch
 ```bash
-git checkout develop
+git checkout main
 git pull
 git checkout -b release/<version>
 ```
 
 ### 2. Version bump
-Update the version and build number in `FinanceTracker.xcodeproj/project.pbxproj`:
+Update the version and build number in `<AppName>.xcodeproj/project.pbxproj`:
 - `MARKETING_VERSION = <version>;`
 - `CURRENT_PROJECT_VERSION = <increment by 1>;`
 
@@ -45,22 +45,17 @@ Use `git log <last-tag>..HEAD --oneline` to find what changed.
 
 ### 4. Commit and tag
 ```bash
-git add FinanceTracker.xcodeproj/project.pbxproj CHANGELOG.md
+git add <AppName>.xcodeproj/project.pbxproj CHANGELOG.md
 git commit -m "chore: bump version to <version>"
 git tag -a v<version> -m "Release <version>"
 ```
 
-### 5. Merge to main and back to develop
+### 5. Merge to main
 ```bash
 git checkout main
 git merge release/<version> --no-ff
 git push origin main
 git push origin v<version>
-
-git checkout develop
-git merge release/<version> --no-ff
-git push origin develop
-
 git branch -d release/<version>
 ```
 
@@ -70,4 +65,4 @@ gh release create v<version> --title "v<version>" --notes-file <(git log <last-t
 ```
 
 ## Done when
-`main` tagged, `develop` merged back, GitHub release created.
+`main` tagged, GitHub release created.
