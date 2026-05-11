@@ -4,7 +4,7 @@ Claude Code slash commands for agent-driven iOS development. Drop these into any
 
 Every feature follows the same disciplined path — you approve the spec and the plan, everything else runs autonomously until you hit merge.
 
-**See it in action:** [FinanceTracker](https://github.com/akshaypimprikar/personal-finance-tracker) — a real iOS app built entirely with this workflow, including specs, plans, and PRs going back to day one.
+**See it in action:** [FinanceTracker](https://github.com/akshaypimprikar/financetracker-ios) — a real iOS app built entirely with this workflow, including specs, plans, and PRs going back to day one.
 
 ---
 
