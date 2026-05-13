@@ -107,3 +107,11 @@ Branch `design/<scope>` off `develop` (e.g. `design/bootstrap`, `design/charts`)
 
 ## Done when
 Tokens approved, Theme/ files created, design-system.md updated, PR open.
+
+**Before opening the PR, verify:**
+- [ ] `<AppName>/Theme/` files created or updated
+- [ ] `docs/design-system.md` updated
+- [ ] `README.md` updated if agent count or repo structure changed
+- [ ] `CHANGELOG.md` `[Unreleased]` section updated
+- [ ] `CLAUDE.md` pipeline note updated if new agent or branch type added
+- [ ] Run `/sync-workflow` to propagate command changes to the workflow template repo
