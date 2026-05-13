@@ -34,6 +34,15 @@ Read `CLAUDE.md` first — it defines the architecture rules you enforce.
 - [ ] Test coverage ≥80% on new code
 - [ ] Unit/integration tests use `import Testing` with `@Suite`/`@Test`/`#expect()` — not XCTest
 
+### Design compliance checks
+*Only applies to PRs that touch `<AppName>/Views/` or add new UI components. Read `docs/design-system.md` and `<AppName>/Theme/` before running these checks.*
+
+- [ ] No hardcoded colors where a `Theme.Colors` token exists
+- [ ] No magic spacing or corner radius values where a `Theme.Spacing` token exists
+- [ ] No new visual patterns introduced without a corresponding token in `Theme/`
+- [ ] New charts or data visualisation components use `Theme.Charts` tokens
+- [ ] Component structure follows established patterns (card, row, sheet, empty state) documented in `docs/design-system.md`
+
 ### Code quality checks
 
 - [ ] No commented-out code committed
