@@ -32,10 +32,11 @@ Read `CLAUDE.md` first for build commands, simulator name, and test framework de
 ```swift
 import Testing
 import SwiftData
-@testable import FinanceTracker
+@testable import <AppName>
 
 func makeContainer() throws -> ModelContainer {
-    let schema = Schema([Account.self, Transaction.self, Category.self, Budget.self, ImportRecord.self])
+    // List all @Model types your app defines
+    let schema = Schema([<Model>.self /*, <Model2>.self, ... */])
     let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
     return try ModelContainer(for: schema, configurations: [config])
 }
@@ -43,12 +44,12 @@ func makeContainer() throws -> ModelContainer {
 
 ### Mock repository pattern for ViewModel tests
 ```swift
-final class MockAccountRepository: AccountRepositoryProtocol {
-    var accounts: [Account] = []
-    func fetchAll() throws -> [Account] { accounts }
-    func fetch(id: UUID) throws -> Account? { accounts.first { $0.id == id } }
-    func save(_ account: Account) throws { accounts.append(account) }
-    func delete(_ account: Account) throws { accounts.removeAll { $0.id == account.id } }
+final class Mock<Model>Repository: <Model>RepositoryProtocol {
+    var items: [<Model>] = []
+    func fetchAll() throws -> [<Model>] { items }
+    func fetch(id: UUID) throws -> <Model>? { items.first { $0.id == id } }
+    func save(_ item: <Model>) throws { items.append(item) }
+    func delete(_ item: <Model>) throws { items.removeAll { $0.id == item.id } }
 }
 ```
 
