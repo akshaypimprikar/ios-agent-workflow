@@ -82,5 +82,8 @@ git push origin --delete release/<version>
 gh release create v<version> --title "v<version>" --notes-file <(git log <last-tag>..v<version> --oneline)
 ```
 
+### 8. Trigger pipeline review
+Run `/pipeline-review` as a background task to capture any pipeline improvements surfaced during this release cycle. It will send a push notification when findings are ready.
+
 ## Done when
-PR merged to `main`, `main` tagged, `develop` updated, GitHub release created.
+PR merged to `main`, `main` tagged, `develop` updated, GitHub release created, and `/pipeline-review` triggered.
