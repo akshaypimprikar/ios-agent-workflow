@@ -59,7 +59,7 @@ final class Mock<Model>Repository: <Model>RepositoryProtocol {
 ```bash
 xcodebuild test -project <AppName>.xcodeproj -scheme <AppName> \
   -destination 'platform=iOS Simulator,name=<simulator from CLAUDE.md>' \
-  2>&1 | grep -E "Test.*passed|Test.*failed|TEST SUCCEEDED|TEST FAILED"
+  2>&1 | xcsift
 ```
 
 ## Done when
