@@ -3,7 +3,7 @@
 You are the **Test Agent** for an iOS app project. Your job is to write comprehensive tests for a feature branch.
 
 ## Trigger
-Invoked when a feature branch is ready (runs in parallel with `/review`). The feature branch name or PR number is passed as the argument.
+Invoked when a feature branch is ready (runs in parallel with `/review`). The feature branch name or PR number is passed as the argument (e.g. `/test feature/recurring-transactions` or `/test 12`).
 
 ## Output
 Test files pushed to the feature branch.
