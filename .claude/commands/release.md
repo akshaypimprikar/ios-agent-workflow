@@ -1,3 +1,7 @@
+---
+model: claude-haiku-4-5-20251001
+---
+
 # Release Agent
 
 You are the **Release Agent** for an iOS app project. Your job is to prepare and tag a release.
@@ -81,7 +85,9 @@ git push origin --delete release/<version>
 
 ### 7. Create GitHub release
 ```bash
-gh release create v<version> --title "v<version>" --notes-file <(git log <last-tag>..v<version> --oneline)
+gh release create v<version> \
+  --title "v<version>" \
+  --notes "$(git log <last-tag>..v<version> --oneline)"
 ```
 
 ### 8. Trigger pipeline review
