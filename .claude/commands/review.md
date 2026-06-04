@@ -64,7 +64,7 @@ Also read the following files if they exist — skip silently if absent:
 For each check: ✅ PASS or ❌ FAIL (with file path + line number).
 
 Final verdict:
-- **APPROVED** — all checks pass, ready to merge
+- **APPROVED** — all checks pass, ready to merge to `develop` (or `main` for hotfixes/releases)
 - **CHANGES REQUESTED** — list issues that must be fixed before merge
 
 If the verdict is CHANGES REQUESTED, append one entry per violation to `.claude/context/rejections.md` before closing the review:
