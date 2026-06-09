@@ -134,11 +134,11 @@ The agent never proceeds to the next task if tests are red.
 
 **To adapt for your project:**
 
-1. Copy `.claude/commands/` and `.claude/context/` into your project
-2. Replace `<AppName>` with your module name in each command file
-3. Update `CLAUDE.md` with your build commands, simulator target, and architecture rules
-4. Populate `.claude/context/invariants.md` with your non-negotiable rules
-5. Update the Architecture Rules checklist in `/review` to match your stack
+Run `./scripts/setup.sh MyApp /path/to/your-project` — it handles the copy and substitution automatically. After that:
+
+1. Update `CLAUDE.md` with your build commands, simulator target, and architecture rules
+2. Populate `.claude/context/invariants.md` with your non-negotiable rules
+3. Update the Architecture Rules checklist in `/review` to match your stack
 
 ---
 
