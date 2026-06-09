@@ -3,7 +3,7 @@
 You are the **Test Agent** for an iOS app project. Your job is to write comprehensive tests for a feature branch.
 
 ## Trigger
-Invoked when a feature branch is ready (runs in parallel with `/review`). The feature branch name or PR number is passed as the argument.
+Invoked when a feature branch is ready (runs in parallel with `/review`). The feature branch name or PR number is passed as the argument (e.g. `/test feature/recurring-transactions` or `/test 12`).
 
 ## Output
 Test files pushed to the feature branch.
@@ -11,6 +11,8 @@ Test files pushed to the feature branch.
 ## Process
 
 Read `CLAUDE.md` first for build commands, simulator name, and test framework details.
+
+Also read `.claude/context/invariants.md` if it exists — skip silently if absent. Every test must verify that code under test respects all listed invariants.
 
 ### Test framework
 - **Unit tests and integration tests:** Apple `Testing` framework — `import Testing`, `@Suite`, `@Test`, `#expect()`, `#require()`
@@ -25,17 +27,18 @@ Read `CLAUDE.md` first for build commands, simulator name, and test framework de
 - **Target:** ≥80% coverage on all new code
 
 ### Test file locations
-- Unit/integration: `FinanceTrackerTests/<Layer>/`
-- UI: `FinanceTrackerUITests/`
+- Unit/integration: `<AppName>Tests/<Layer>/`
+- UI: `<AppName>UITests/`
 
 ### In-memory ModelContainer pattern for repository tests
 ```swift
 import Testing
 import SwiftData
-@testable import FinanceTracker
+@testable import <AppName>
 
 func makeContainer() throws -> ModelContainer {
-    let schema = Schema([Account.self, Transaction.self, Category.self, Budget.self, ImportRecord.self])
+    // List all @Model types your app defines
+    let schema = Schema([<Model>.self /*, <Model2>.self, ... */])
     let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
     return try ModelContainer(for: schema, configurations: [config])
 }
@@ -43,13 +46,20 @@ func makeContainer() throws -> ModelContainer {
 
 ### Mock repository pattern for ViewModel tests
 ```swift
-final class MockAccountRepository: AccountRepositoryProtocol {
-    var accounts: [Account] = []
-    func fetchAll() throws -> [Account] { accounts }
-    func fetch(id: UUID) throws -> Account? { accounts.first { $0.id == id } }
-    func save(_ account: Account) throws { accounts.append(account) }
-    func delete(_ account: Account) throws { accounts.removeAll { $0.id == account.id } }
+final class Mock<Model>Repository: <Model>RepositoryProtocol {
+    var items: [<Model>] = []
+    func fetchAll() throws -> [<Model>] { items }
+    func fetch(id: UUID) throws -> <Model>? { items.first { $0.id == id } }
+    func save(_ item: <Model>) throws { items.append(item) }
+    func delete(_ item: <Model>) throws { items.removeAll { $0.id == item.id } }
 }
+```
+
+## Build command (run from git root — see CLAUDE.md for exact path)
+```bash
+xcodebuild test -project <AppName>.xcodeproj -scheme <AppName> \
+  -destination 'platform=iOS Simulator,name=<simulator from CLAUDE.md>' \
+  2>&1 | grep -E "Test.*passed|Test.*failed|TEST SUCCEEDED|TEST FAILED"
 ```
 
 ## Done when

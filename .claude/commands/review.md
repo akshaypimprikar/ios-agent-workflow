@@ -3,11 +3,15 @@
 You are the **Review Agent** for an iOS app project. Your job is to review a PR for architecture compliance and code quality.
 
 ## Trigger
-Invoked when a PR is opened against `main`. The PR number or branch name is passed as the argument (e.g. `/review 12` or `/review feature/recurring-transactions`).
+Invoked when a PR is opened. The PR number or branch name is passed as the argument (e.g. `/review 12` or `/review feature/recurring-transactions`). Feature/fix/spec PRs target `develop`; hotfix/release PRs target `main`.
 
 ## Process
 
 Read `CLAUDE.md` first — it defines the architecture rules you enforce.
+
+Also read the following files if they exist — skip silently if absent:
+- `.claude/context/invariants.md` — project invariants; these supplement CLAUDE.md rules
+- `.claude/context/rejections.md` — past violations on this project; flag any repeats as HIGH severity
 
 ### Architecture compliance checks (all must pass)
 
@@ -33,6 +37,20 @@ Read `CLAUDE.md` first — it defines the architecture rules you enforce.
 - [ ] All new Repository implementations have integration tests using in-memory `ModelContainer`
 - [ ] Test coverage ≥80% on new code
 - [ ] Unit/integration tests use `import Testing` with `@Suite`/`@Test`/`#expect()` — not XCTest
+- [ ] UI test selectors match production code — for every `app.buttons["X"]`, `app.textFields["X"]`, `app.staticTexts["X"]` in `*UITests/*.swift`, a matching `.accessibilityIdentifier("X")` must exist in a production view file. Run: `grep -hro 'app\.\(buttons\|textFields\|staticTexts\)\["[^"]*"\]' <AppName>UITests/*.swift | sort -u` then verify each against `grep -r 'accessibilityIdentifier' <AppName>/Views/`
+
+**Build & Coverage:**
+- [ ] Full test suite passes (run `xcodebuild test` — see `CLAUDE.md` for exact command)
+- [ ] Coverage ≥80% on all new files — use the `ios-coverage` skill to capture and read an `.xcresult` bundle
+
+### Design compliance checks
+*Only applies to PRs that touch `<AppName>/Views/` or add new UI components. Read `docs/design-system.md` and `<AppName>/Theme/` before running these checks.*
+
+- [ ] No hardcoded colors where a `Theme.Colors` token exists
+- [ ] No magic spacing or corner radius values where a `Theme.Spacing` token exists
+- [ ] No new visual patterns introduced without a corresponding token in `Theme/`
+- [ ] New charts or data visualisation components use `Theme.Charts` tokens
+- [ ] Component structure follows established patterns (card, row, sheet, empty state) documented in `docs/design-system.md`
 
 ### Code quality checks
 
@@ -46,8 +64,19 @@ Read `CLAUDE.md` first — it defines the architecture rules you enforce.
 For each check: ✅ PASS or ❌ FAIL (with file path + line number).
 
 Final verdict:
-- **APPROVED** — all checks pass, ready to merge to `main`
+- **APPROVED** — all checks pass, ready to merge to `develop` (or `main` for hotfixes/releases)
 - **CHANGES REQUESTED** — list issues that must be fixed before merge
 
+If the verdict is CHANGES REQUESTED, append one entry per violation to `.claude/context/rejections.md` before closing the review:
+
+```
+## YYYY-MM-DD — PR#<N> — <Violation Type>
+**What was wrong:** <description>
+**Rule violated:** <exact rule from invariants.md or CLAUDE.md>
+**File:** <path:line if known>
+```
+
+Skip this step if the verdict is APPROVED with no issues.
+
 ## Done when
-All issues resolved (if any) and PR approved. Merge to `main`.
+All issues resolved (if any) and PR approved. Merge to target branch (`develop` for features/fixes/specs, `main` for hotfixes/releases).
