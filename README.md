@@ -132,15 +132,15 @@ The agent never proceeds to the next task if tests are red.
 - **Swift Testing** — `import Testing`, `@Suite`, `@Test`, `#expect()` for unit/integration tests; XCUITest for UI tests
 - **`PBXFileSystemSynchronizedRootGroup`** (Xcode 16+) — files auto-compile when placed in the correct directory; never edit `project.pbxproj`
 
-**To adapt for your project:**
-
-The fastest path is the setup script:
+**To adapt for your project — via script (recommended):**
 
 ```bash
 ./scripts/setup.sh MyApp /path/to/your-project
 ```
 
-Or manually:
+Copies everything and substitutes all placeholders. Then fill in `CLAUDE.md` and seed `invariants.md`.
+
+**Or manually:**
 
 1. Copy `.claude/commands/`, `.claude/context/`, `scaffold/.github/workflows/`, and `scripts/` into your project (place the workflows at `.github/workflows/`)
 2. Replace `<AppName>` with your module name in each command file
