@@ -43,15 +43,15 @@ flowchart TD
     A([💡 Idea]):::dim --> B
     B["/spec\n✓ you approve"]:::human --> C
     C["/plan\n✓ you approve"]:::human --> D
-    D[/feature]:::auto --> E
-    E[/gates]:::auto --> F
+    D["/feature"]:::auto --> E
+    E["/gates"]:::auto --> F
     F([PR opened]):::dim --> G & H
-    G[/review]:::auto --> I
-    H[/test]:::auto --> I
+    G["/review"]:::auto --> I
+    H["/test"]:::auto --> I
     I([merge to develop]):::dim -.->|next feature| B
-    I --> J[/release]:::auto --> K([main · tagged]):::dim
+    I --> J["/release"]:::auto --> K([main · tagged]):::dim
 
-    BUG([Bug report]):::dim --> BF[/bugfix]:::auto --> BG[/gates]:::auto --> BP([PR]):::dim --> BR[/review]:::auto --> BM([merge]):::dim
+    BUG([Bug report]):::dim --> BF["/bugfix"]:::auto --> BG["/gates"]:::auto --> BP([PR]):::dim --> BR["/review"]:::auto --> BM([merge]):::dim
 
     classDef human fill:#3d2800,stroke:#fbbf24,color:#fbbf24
     classDef auto  fill:#0a1f14,stroke:#34d399,color:#34d399
