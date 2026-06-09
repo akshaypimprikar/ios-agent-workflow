@@ -18,19 +18,22 @@ Proven on [FinanceTracker](https://github.com/akshaypimprikar/personal-finance-t
 ## Quick Start
 
 ```bash
-cp -r .claude/commands/ /path/to/your-ios-app/.claude/commands/
-cp -r .claude/context/  /path/to/your-ios-app/.claude/context/
+git clone https://github.com/akshaypimprikar/ios-agent-workflow
+cd ios-agent-workflow
+./scripts/setup.sh MyApp /path/to/your-ios-project
 ```
 
-1. Replace `<AppName>` with your module name in each command file
-2. Add your build commands, simulator target, and architecture rules to `CLAUDE.md`
-3. Seed `.claude/context/invariants.md` with your non-negotiable rules
+The script copies all commands, context files, CI workflows, and support scripts into your project, substitutes your app name throughout, and generates a starter `CLAUDE.md`. No manual find-and-replace.
 
 Then kick off your first feature:
 
 ```
 /spec "describe your feature idea"
 ```
+
+**After setup:**
+1. Fill in `CLAUDE.md` — add your architecture rules and any project-specific constraints
+2. Seed `.claude/context/invariants.md` with your non-negotiable rules before running `/feature`
 
 Each command is plain markdown — no dependencies, no build step.
 

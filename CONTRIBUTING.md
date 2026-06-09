@@ -20,11 +20,16 @@ That means the bar for contributions is: **would this hold up on a real producti
 
 ## Adapting for your project
 
-1. Copy `.claude/commands/`, `.claude/context/`, `scaffold/.github/workflows/`, and `scripts/` into your iOS project (place the workflows at `.github/workflows/` in your repo)
-2. Replace `<AppName>` with your module name in each command file
-3. Replace `YOUR_PROJECT` and `YOUR_SCHEME` with your Xcode project and scheme names in all three workflow files
-4. Update `CLAUDE.md` with your project's build commands, simulator target, and architecture rules
-5. Populate `.claude/context/invariants.md` with your non-negotiable rules before running `/feature`
+Run the setup script from the cloned repo:
+
+```bash
+./scripts/setup.sh MyApp /path/to/your-ios-project [MyScheme]
+```
+
+This copies commands, context files, CI workflows, and scripts into your project and substitutes all placeholders. Then:
+
+1. Fill in `CLAUDE.md` with your architecture rules and build commands
+2. Populate `.claude/context/invariants.md` with your non-negotiable rules before running `/feature`
 
 The agents read `CLAUDE.md` and `.claude/context/` before every task. That's where project-specific context lives — not inside the command files themselves.
 
